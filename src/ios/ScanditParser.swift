@@ -43,7 +43,6 @@ public class ScanditParser: CDVPlugin, DataCapturePlugin {
         commandDelegate.send(.success(message: [:]), callbackId: command.callbackId)
     }
 
-
     @objc(parseString:)
     func parseString(command: CDVInvokedUrlCommand) {
         guard let commandArgument = try? ParserCommandArgument.fromCommand(command) else {
