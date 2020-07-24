@@ -30,22 +30,18 @@ class ParserActionFactory(
         }
     }
 
+    override fun canBeRunWithoutCameraPermission(actionName: String): Boolean = true
+
     private fun createActionInjectDefaults(): Action = ActionInjectDefaults(listener)
 
     private fun createActionParseString(): Action = ActionParseString(parsersHandler, listener)
 
     private fun createActionParseRawData(): Action = ActionParseRawData(parsersHandler, listener)
 
-    override val actionsNotDependentOnCameraPermission = ACTIONS_NOT_DEPENDING_ON_CAMERA
-
     companion object {
         private const val INJECT_DEFAULTS = "getDefaults"
         private const val PARSE_STRING = "parseString"
         private const val PARSE_RAW_DATA = "parseRawData"
-
-        private val ACTIONS_NOT_DEPENDING_ON_CAMERA = setOf(
-            INJECT_DEFAULTS, PARSE_STRING, PARSE_RAW_DATA
-        )
     }
 }
 
