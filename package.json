@@ -1,6 +1,6 @@
 {
   "name": "scandit-cordova-datacapture-parser",
-  "version": "6.4.2",
+  "version": "6.5.0",
   "description": "Scandit Data Capture SDK for Cordova",
   "license": "Apache-2.0",
   "keywords": [
@@ -9,7 +9,7 @@
     "cordova-android"
   ],
   "scripts": {
-    "build": "node ./scripts/build-ts.js",
+    "build": "tsc",
     "postbuild": "node ./scripts/post-build.js",
     "test": "npm run lint && jest",
     "lint": "tslint --project .",
@@ -21,10 +21,9 @@
     "clean": "npm run clear-jest-cache && node ./scripts/clean.js",
     "clean-all": "npm run clean && node ./scripts/clean-all.js"
   },
-  "dependencies": {
-    "typescript": "^3.4.5"
-  },
+  "dependencies": {},
   "devDependencies": {
+    "typescript": "^3.4.5",
     "@types/jest": "^24.0.13",
     "cordova-paramedic": "https://github.com/apache/cordova-paramedic.git",
     "jest": "^24.8.0",

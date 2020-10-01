@@ -48,7 +48,9 @@ class ScanditParser : CordovaPlugin(),
     }
 
     override fun execute(
-        action: String, args: JSONArray, callbackContext: CallbackContext
+        action: String,
+        args: JSONArray,
+        callbackContext: CallbackContext
     ): Boolean {
         return try {
             actionsHandler.addAction(action, args, callbackContext)
@@ -71,7 +73,8 @@ class ScanditParser : CordovaPlugin(),
 
     //region ActionParseRawData.ResultListener
     override fun onParseRawData(
-        parsedData: ParsedData, callbackContext: CallbackContext
+        parsedData: ParsedData,
+        callbackContext: CallbackContext
     ) {
         callbackContext.success(parsedData.jsonString)
     }
@@ -87,7 +90,8 @@ class ScanditParser : CordovaPlugin(),
 
     //region ActionParseString.ResultListener
     override fun onParseString(
-        parsedData: ParsedData, callbackContext: CallbackContext
+        parsedData: ParsedData,
+        callbackContext: CallbackContext
     ) {
         callbackContext.success(parsedData.jsonString)
     }
@@ -108,7 +112,6 @@ class ScanditParser : CordovaPlugin(),
         parser: Parser,
         json: JsonValue
     ) {
-        parser.updateFromJson(json.jsonString())
         parsersHandler.registerParser(json.requireByKeyAsString("id"), parser)
     }
     //endregion

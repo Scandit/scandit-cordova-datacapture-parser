@@ -44,4 +44,3 @@ class ParserActionFactory(
         private const val PARSE_RAW_DATA = "parseRawData"
     }
 }
-
