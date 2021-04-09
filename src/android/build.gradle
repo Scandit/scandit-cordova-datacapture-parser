@@ -5,5 +5,4 @@
  */
 
 dependencies {
-    api(name: 'ScanditParser', ext: 'aar')
-}
+   }
