@@ -80,7 +80,7 @@ class ScanditParser : CordovaPlugin(),
     }
 
     override fun onParseRawDataNativeError(error: Throwable, callbackContext: CallbackContext) {
-        CannotParseStringError(error.localizedMessage).sendResult(callbackContext)
+        CannotParseStringError(error.localizedMessage.orEmpty()).sendResult(callbackContext)
     }
 
     override fun onParseRawDataNoParserError(callbackContext: CallbackContext) {
@@ -97,7 +97,7 @@ class ScanditParser : CordovaPlugin(),
     }
 
     override fun onParseStringNativeError(error: Throwable, callbackContext: CallbackContext) {
-        CannotParseRawDataError(error.localizedMessage).sendResult(callbackContext)
+        CannotParseRawDataError(error.localizedMessage.orEmpty()).sendResult(callbackContext)
     }
 
     override fun onParseStringNoParserError(callbackContext: CallbackContext) {
