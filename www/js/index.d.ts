@@ -60,7 +60,7 @@ export class Parser implements DataCaptureComponent {
     private waitingForInitialization;
     private _proxy;
     private readonly proxy;
-    static forContextAndFormat(context: DataCaptureContext, dataFormat: ParserDataFormat): Parser;
+    static forContextAndFormat(context: DataCaptureContext, dataFormat: ParserDataFormat): Promise<Parser>;
     private constructor();
     setOptions(options: {
         [key: string]: any;

@@ -29,12 +29,12 @@ class Parser extends Serializeable_1.DefaultSerializeable {
     static forContextAndFormat(context, dataFormat) {
         const parser = new Parser();
         parser.dataFormat = dataFormat;
-        context.addComponent(parser)
+        return context.addComponent(parser)
             .then(() => {
             parser.isInitialized = true;
             parser.waitingForInitialization.forEach(f => f());
+            return parser;
         });
-        return parser;
     }
     setOptions(options) {
         this.options = options;
