@@ -6,6 +6,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Parser = void 0;
 const Serializeable_1 = require("scandit-cordova-datacapture-core.Serializeable");
 const ParserProxy_1 = require("scandit-cordova-datacapture-parser.ParserProxy");
 class Parser extends Serializeable_1.DefaultSerializeable {

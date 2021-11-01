@@ -6,11 +6,11 @@ interface PrivateParsedData {
 }
 export class ParsedData {
     private _jsonString;
-    readonly jsonString: string;
+    get jsonString(): string;
     private _fields;
-    readonly fields: ParsedField[];
+    get fields(): ParsedField[];
     private _fieldsByName;
-    readonly fieldsByName: {
+    get fieldsByName(): {
         [key: string]: ParsedField;
     };
     private static fromJSON;
@@ -28,13 +28,13 @@ interface PrivateParsedField {
 }
 export class ParsedField {
     private _name;
-    readonly name: string;
+    get name(): string;
     private _parsed;
-    readonly parsed: any;
+    get parsed(): any;
     private _rawString;
-    readonly rawString: string;
+    get rawString(): string;
     private _issues;
-    readonly issues: string[];
+    get issues(): string[];
     private static fromJSON;
 }
 
@@ -54,12 +54,12 @@ export class Parser implements DataCaptureComponent {
     private dataFormat;
     private options;
     private _id;
-    readonly id: string;
+    get id(): string;
     private _context;
     private isInitialized;
     private waitingForInitialization;
     private _proxy;
-    private readonly proxy;
+    private get proxy();
     static forContextAndFormat(context: DataCaptureContext, dataFormat: ParserDataFormat): Promise<Parser>;
     private constructor();
     setOptions(options: {

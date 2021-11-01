@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ParserProxy = void 0;
 /// <amd-module name="scandit-cordova-datacapture-parser.ParserProxy"/>
 // ^ needed because Cordova can't resolve "../xx" style dependencies
 const ParsedData_1 = require("scandit-cordova-datacapture-parser.ParsedData");
