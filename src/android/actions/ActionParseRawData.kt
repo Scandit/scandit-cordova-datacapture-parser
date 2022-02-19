@@ -33,10 +33,10 @@ class ActionParseRawData(
                 listener.onParseRawData(parsedData, callbackContext)
             }
         } catch (e: JSONException) {
-            e.printStackTrace()
+            println(e)
             listener.onJsonParseError(e, callbackContext)
         } catch (e: RuntimeException) { // TODO [SDC-1851] - fine-catch deserializer exceptions
-            e.printStackTrace()
+            println(e)
             listener.onParseRawDataNativeError(e, callbackContext)
         }
     }

@@ -31,7 +31,8 @@ import org.apache.cordova.CallbackContext
 import org.apache.cordova.CordovaPlugin
 import org.json.JSONArray
 
-class ScanditParser : CordovaPlugin(),
+class ScanditParser :
+    CordovaPlugin(),
     ParserActionsListeners,
     ParserDeserializerListener,
     ComponentDeserializersProvider {
@@ -55,9 +56,10 @@ class ScanditParser : CordovaPlugin(),
         return try {
             actionsHandler.addAction(action, args, callbackContext)
         } catch (e: InvalidActionNameError) {
+            println(e)
             false
         } catch (e: Exception) {
-            e.printStackTrace()
+            println(e)
             true
         }
     }
