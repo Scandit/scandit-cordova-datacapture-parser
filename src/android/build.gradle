@@ -13,7 +13,7 @@ repositories {
 }
 
 dependencies {
-    def sdk_version = "6.12.1"
+    def sdk_version = "6.13.0"
 
     api "com.scandit.datacapture:parser:$sdk_version"
 }
