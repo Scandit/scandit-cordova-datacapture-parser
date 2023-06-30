@@ -1,6 +1,6 @@
 declare module Scandit {
 
- type ParsedDataJSON = [ParsedFieldJSON];
+type ParsedDataJSON = [ParsedFieldJSON];
 interface PrivateParsedData {
     fromJSON(json: ParsedDataJSON): ParsedData;
 }
