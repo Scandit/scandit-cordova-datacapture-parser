@@ -1,11 +1,7 @@
-<?xml version='1.0' encoding='utf-8'?>
-<plugin id="scandit-cordova-datacapture-parser" version="6.18.1">
-
+<plugin id="scandit-cordova-datacapture-parser" version="6.18.2">
     <name>ScanditParser</name>
-
-    <js-module name="Cordova" src="www/js/Cordova/Cordova.js"></js-module>
-    <js-module name="ParserProxy" src="www/js/Cordova/ParserProxy.js"></js-module>
-
+    <js-module name="Cordova" src="www/js/Cordova/Cordova.js" />
+    <js-module name="ParserProxy" src="www/js/Cordova/ParserProxy.js" />
     <js-module name="ParsedData" src="www/js/ParsedData.js">
         <merges target="Scandit" />
     </js-module>
@@ -18,13 +14,10 @@
     <js-module name="ParserDataFormat" src="www/js/ParserDataFormat.js">
         <merges target="Scandit" />
     </js-module>
-
     <engines>
         <engine name="cordova-ios" version=">=5.0.0" />
         <engine name="cordova-android" version=">=7.0.0" />
     </engines>
-
-    <!-- iOS -->
     <platform name="ios">
         <config-file parent="/*" target="config.xml">
             <feature name="ScanditParser">
@@ -32,59 +25,35 @@
                 <param name="onload" value="true" />
             </feature>
         </config-file>
-
         <header-file src="src/ios/ScanditParser-Bridging-Header.h" type="BridgingHeader" />
-
         <source-file src="src/ios/ScanditParser.swift" />
         <source-file src="src/ios/ScanditParser+ParserDeserializerDelegate.swift" />
-
-        <dependency id="scandit-cordova-datacapture-core" version="6.18.1" />
-
-        <framework src="ScanditParser" spec="= 6.18.1" type="podspec" />
+        <dependency id="scandit-cordova-datacapture-core" version="6.18.2" />
+        <podspec>
+            <pods use-frameworks="true">
+                <pod name="ScanditParser" spec="= 6.18.2" />
+            </pods>
+        </podspec>
     </platform>
-
-    <!-- Android -->
     <platform name="android">
-
         <config-file parent="/*" target="config.xml">
             <preference name="android-minSdkVersion" value="23" />
             <feature name="ScanditParser">
-                <param name="android-package"
-                    value="com.scandit.datacapture.cordova.parser.ScanditParser" />
+                <param name="android-package" value="com.scandit.datacapture.cordova.parser.ScanditParser" />
             </feature>
         </config-file>
-
-        <source-file src="src/android/ScanditParser.kt"
-            target-dir="kotlin/com/scandit/datacapture/cordova/parser" />
-        <!-- Actions -->
-        <source-file src="src/android/actions/ActionInjectDefaults.kt"
-            target-dir="kotlin/com/scandit/datacapture/cordova/parser/actions" />
-        <source-file src="src/android/actions/ActionParseRawData.kt"
-            target-dir="kotlin/com/scandit/datacapture/cordova/parser/actions" />
-        <source-file src="src/android/actions/ActionParseString.kt"
-            target-dir="kotlin/com/scandit/datacapture/cordova/parser/actions" />
-        <!-- Data -->
-        <source-file src="src/android/data/SerializableParserInput.kt"
-            target-dir="kotlin/com/scandit/datacapture/cordova/parser/data" />
-        <!-- Errors -->
-        <source-file src="src/android/errors/CannotParseRawDataError.kt"
-            target-dir="kotlin/com/scandit/datacapture/cordova/parser/errors" />
-        <source-file src="src/android/errors/CannotParseStringError.kt"
-            target-dir="kotlin/com/scandit/datacapture/cordova/parser/errors" />
-        <source-file src="src/android/errors/ParserInstanceNotFoundError.kt"
-            target-dir="kotlin/com/scandit/datacapture/cordova/parser/errors" />
-        <!-- Factories -->
-        <source-file src="src/android/factories/ParserActionFactory.kt"
-            target-dir="kotlin/com/scandit/datacapture/cordova/parser/factories" />
-        <!-- Handlers -->
-        <source-file src="src/android/handlers/ParsersHandler.kt"
-            target-dir="kotlin/com/scandit/datacapture/cordova/parser/handlers" />
-
-        <dependency id="scandit-cordova-datacapture-core" version="6.18.1" />
-
+        <source-file src="src/android/ScanditParser.kt" target-dir="kotlin/com/scandit/datacapture/cordova/parser" />
+        <source-file src="src/android/actions/ActionInjectDefaults.kt" target-dir="kotlin/com/scandit/datacapture/cordova/parser/actions" />
+        <source-file src="src/android/actions/ActionParseRawData.kt" target-dir="kotlin/com/scandit/datacapture/cordova/parser/actions" />
+        <source-file src="src/android/actions/ActionParseString.kt" target-dir="kotlin/com/scandit/datacapture/cordova/parser/actions" />
+        <source-file src="src/android/data/SerializableParserInput.kt" target-dir="kotlin/com/scandit/datacapture/cordova/parser/data" />
+        <source-file src="src/android/errors/CannotParseRawDataError.kt" target-dir="kotlin/com/scandit/datacapture/cordova/parser/errors" />
+        <source-file src="src/android/errors/CannotParseStringError.kt" target-dir="kotlin/com/scandit/datacapture/cordova/parser/errors" />
+        <source-file src="src/android/errors/ParserInstanceNotFoundError.kt" target-dir="kotlin/com/scandit/datacapture/cordova/parser/errors" />
+        <source-file src="src/android/factories/ParserActionFactory.kt" target-dir="kotlin/com/scandit/datacapture/cordova/parser/factories" />
+        <source-file src="src/android/handlers/ParsersHandler.kt" target-dir="kotlin/com/scandit/datacapture/cordova/parser/handlers" />
+        <dependency id="scandit-cordova-datacapture-core" version="6.18.2" />
         <framework custom="true" src="src/android/build.gradle" type="gradleReference" />
-
         <hook src="src/hooks/support-kotlin.js" type="after_plugin_install" />
     </platform>
-
 </plugin>
