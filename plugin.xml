@@ -1,4 +1,4 @@
-<plugin id="scandit-cordova-datacapture-parser" version="6.19.4">
+<plugin id="scandit-cordova-datacapture-parser" version="6.19.5">
     <name>ScanditParser</name>
     <js-module name="Cordova" src="www/js/Cordova/Cordova.js" />
     <js-module name="ParserProxy" src="www/js/Cordova/ParserProxy.js" />
@@ -28,10 +28,10 @@
         <header-file src="src/ios/ScanditParser-Bridging-Header.h" type="BridgingHeader" />
         <source-file src="src/ios/ScanditParser.swift" />
         <source-file src="src/ios/ScanditParser+ParserDeserializerDelegate.swift" />
-        <dependency id="scandit-cordova-datacapture-core" version="6.19.4" />
+        <dependency id="scandit-cordova-datacapture-core" version="6.19.5" />
         <podspec>
             <pods use-frameworks="true">
-                <pod name="ScanditParser" spec="= 6.19.4" />
+                <pod name="ScanditParser" spec="= 6.19.5" />
             </pods>
         </podspec>
     </platform>
@@ -51,7 +51,7 @@
         <source-file src="src/android/errors/ParserInstanceNotFoundError.kt" target-dir="kotlin/com/scandit/datacapture/cordova/parser/errors" />
         <source-file src="src/android/factories/ParserActionFactory.kt" target-dir="kotlin/com/scandit/datacapture/cordova/parser/factories" />
         <source-file src="src/android/handlers/ParsersHandler.kt" target-dir="kotlin/com/scandit/datacapture/cordova/parser/handlers" />
-        <dependency id="scandit-cordova-datacapture-core" version="6.19.4" />
+        <dependency id="scandit-cordova-datacapture-core" version="6.19.5" />
         <framework custom="true" src="src/android/build.gradle" type="gradleReference" />
         <hook src="src/hooks/support-kotlin.js" type="after_plugin_install" />
     </platform>
