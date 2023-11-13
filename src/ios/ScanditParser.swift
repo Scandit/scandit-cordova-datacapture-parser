@@ -1,5 +1,4 @@
 import ScanditParser
-import ScanditFrameworksCore
 
 extension CDVPluginResult {
     static func success(withParsedData parsedData: ParsedData) -> CDVPluginResult {
@@ -19,13 +18,13 @@ extension Array where Element == Parser {
 }
 
 @objc(ScanditParser)
-public class ScanditParser: CDVPlugin, DeserializationLifeCycleObserver {
+public class ScanditParser: CDVPlugin, DataCapturePlugin {
     lazy var modeDeserializers: [DataCaptureModeDeserializer] = []
 
-    lazy var componentDeserializer: DataCaptureComponentDeserializer = {
+    lazy var componentDeserializers: [DataCaptureComponentDeserializer] = {
         let parserDeserializer = ParserDeserializer()
         parserDeserializer.delegate = self
-        return parserDeserializer
+        return [parserDeserializer]
     }()
 
     var components: [DataCaptureComponent] {
@@ -36,16 +35,7 @@ public class ScanditParser: CDVPlugin, DeserializationLifeCycleObserver {
 
     override public func pluginInitialize() {
         super.pluginInitialize()
-        ScanditCaptureCore.registerComponentDeserializer(componentDeserializer)
-        DeserializationLifeCycleDispatcher.shared.attach(observer: self)
-    }
-
-    public override func dispose() {
-        DeserializationLifeCycleDispatcher.shared.detach(observer: self)
-    }
-
-    public func parsersRemoved() {
-        parsers.removeAll()
+        ScanditCaptureCore.dataCapturePlugins.append(self)
     }
 
     @objc(getDefaults:)
