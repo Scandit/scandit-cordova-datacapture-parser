@@ -10,6 +10,14 @@ exports.Parser = void 0;
 const Serializeable_1 = require("scandit-cordova-datacapture-core.Serializeable");
 const ParserProxy_1 = require("scandit-cordova-datacapture-parser.ParserProxy");
 class Parser extends Serializeable_1.DefaultSerializeable {
+    constructor() {
+        super();
+        this.type = 'parser';
+        this.options = {};
+        this._id = `${Date.now()}`;
+        this.isInitialized = false;
+        this.waitingForInitialization = [];
+    }
     get id() {
         return this._id;
     }
@@ -28,14 +36,6 @@ class Parser extends Serializeable_1.DefaultSerializeable {
             parser.waitingForInitialization.forEach(f => f());
             return parser;
         });
-    }
-    constructor() {
-        super();
-        this.type = 'parser';
-        this.options = {};
-        this._id = `${Date.now()}`;
-        this.isInitialized = false;
-        this.waitingForInitialization = [];
     }
     setOptions(options) {
         this.options = options;
@@ -57,7 +57,7 @@ class Parser extends Serializeable_1.DefaultSerializeable {
     }
 }
 __decorate([
-    (0, Serializeable_1.nameForSerialization)('id')
+    Serializeable_1.nameForSerialization('id')
 ], Parser.prototype, "_id", void 0);
 __decorate([
     Serializeable_1.ignoreFromSerialization
