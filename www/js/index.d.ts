@@ -1,6 +1,6 @@
 declare module Scandit {
 
- type ParsedDataJSON = [ParsedFieldJSON];
+type ParsedDataJSON = [ParsedFieldJSON];
 interface PrivateParsedData {
     fromJSON(json: ParsedDataJSON): ParsedData;
 }
@@ -74,10 +74,22 @@ export class Parser implements DataCaptureComponent {
 export enum ParserDataFormat {
     GS1AI = "gs1ai",
     HIBC = "hibc",
+    /**
+     * @deprecated ParserDataFormat.DLID
+     * Use ID Capture instead.
+     */
     DLID = "dlid",
+    /**
+     * @deprecated ParserDataFormat.MRTD
+     * Use ID Capture instead.
+     */
     MRTD = "mrtd",
     SwissQR = "swissQr",
     VIN = "vin",
+    /**
+     * @deprecated ParserDataFormat.UsUsid
+     * Use ID Capture instead.
+     */
     UsUsid = "usUsid"
 }
 
