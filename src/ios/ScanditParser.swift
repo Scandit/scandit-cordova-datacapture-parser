@@ -1,25 +1,51 @@
 import ScanditParser
 import ScanditFrameworksCore
-import ScanditFrameworksParser
+
+extension CDVPluginResult {
+    static func success(withParsedData parsedData: ParsedData) -> CDVPluginResult {
+        return .success(message: parsedData.jsonString)
+    }
+}
 
 struct ParserCommandArgument: CommandJSONArgument {
     let id: String
     let data: String
 }
 
+extension Array where Element == Parser {
+    func parser(withID parserID: String) -> Parser? {
+        return self.first(where: { $0.componentId == parserID })
+    }
+}
+
 @objc(ScanditParser)
-public class ScanditParser: CDVPlugin {
-    var parserModule: ParserModule!
+public class ScanditParser: CDVPlugin, DeserializationLifeCycleObserver {
+    lazy var modeDeserializers: [DataCaptureModeDeserializer] = []
+
+    lazy var componentDeserializer: DataCaptureComponentDeserializer = {
+        let parserDeserializer = ParserDeserializer()
+        parserDeserializer.delegate = self
+        return parserDeserializer
+    }()
+
+    var components: [DataCaptureComponent] {
+        return parsers
+    }
+
+    lazy var parsers = [Parser]()
 
     override public func pluginInitialize() {
         super.pluginInitialize()
-        parserModule = ParserModule()
-        parserModule.didStart()
+        ScanditCaptureCore.registerComponentDeserializer(componentDeserializer)
+        DeserializationLifeCycleDispatcher.shared.attach(observer: self)
     }
 
     public override func dispose() {
-        parserModule.didStop()
-        super.dispose()
+        DeserializationLifeCycleDispatcher.shared.detach(observer: self)
+    }
+
+    public func parsersRemoved() {
+        parsers.removeAll()
     }
 
     @objc(getDefaults:)
@@ -33,10 +59,19 @@ public class ScanditParser: CDVPlugin {
             commandDelegate.send(.failure(with: .invalidJSON), callbackId: command.callbackId)
             return
         }
-        parserModule.parse(string: commandArgument.data,
-                           id: commandArgument.id,
-                           result: CordovaResult(commandDelegate, command.callbackId)
-        )
+
+        guard let parser = parsers.parser(withID: commandArgument.id) else {
+            commandDelegate.send(.failure(with: .parserNotFound), callbackId: command.callbackId)
+            return
+        }
+
+        do {
+            let parsedData = try parser.parseString(commandArgument.data)
+            commandDelegate.send(.success(withParsedData: parsedData), callbackId: command.callbackId)
+        } catch let error {
+            commandDelegate.send(.failure(with: .couldNotParseString(reason: error.localizedDescription)),
+                                 callbackId: command.callbackId)
+        }
     }
 
     @objc(parseRawData:)
@@ -45,27 +80,24 @@ public class ScanditParser: CDVPlugin {
             commandDelegate.send(.failure(with: .invalidJSON), callbackId: command.callbackId)
             return
         }
-        parserModule.parse(data: commandArgument.data,
-                           id: commandArgument.id,
-                           result: CordovaResult(commandDelegate, command.callbackId)
-        )
-    }
-    
-    @objc(createUpdateNativeInstance:)
-    func createUpdateNativeInstance(command: CDVInvokedUrlCommand) {
-        guard let parserJson = command.defaultArgumentAsString else {
-            commandDelegate.send(.failure(with: .invalidJSON), callbackId: command.callbackId)
+
+        guard let parser = parsers.parser(withID: commandArgument.id) else {
+            commandDelegate.send(.failure(with: .parserNotFound), callbackId: command.callbackId)
             return
         }
-        parserModule.createOrUpdateParser(parserJson: parserJson, result: CordovaResult(commandDelegate, command.callbackId))
-    }
-    
-    @objc(disposeParser:)
-    func disposeParser(command: CDVInvokedUrlCommand) {
-        guard let parserId = command.defaultArgumentAsString else {
-            commandDelegate.send(.failure(with: .invalidJSON), callbackId: command.callbackId)
+
+        guard let data = Data(base64Encoded: commandArgument.data) else {
+            commandDelegate.send(.failure(with: .couldNotParseRawData(reason: "Could not decode base64 data")),
+                                 callbackId: command.callbackId)
             return
         }
-        parserModule.disposeParser(parserId: parserId, result: CordovaResult(commandDelegate, command.callbackId))
+
+        do {
+            let parsedData = try parser.parseRawData(data)
+            commandDelegate.send(.success(withParsedData: parsedData), callbackId: command.callbackId)
+        } catch let error {
+            commandDelegate.send(.failure(with: .couldNotParseRawData(reason: error.localizedDescription)),
+                                 callbackId: command.callbackId)
+        }
     }
 }
