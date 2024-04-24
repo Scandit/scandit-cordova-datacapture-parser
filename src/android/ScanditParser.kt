@@ -40,6 +40,7 @@ class ScanditParser : CordovaPlugin() {
 
     override fun onDestroy() {
         parserModule.onDestroy()
+        super.onDestroy()
     }
 
     override fun execute(
