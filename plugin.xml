@@ -1,4 +1,4 @@
-<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" id="scandit-cordova-datacapture-parser" version="6.22.3">
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" id="scandit-cordova-datacapture-parser" version="6.24.2">
     <name>ScanditParser</name>
     <js-module name="Scandit" src="dist/index.js">
         <runs />
@@ -17,10 +17,10 @@
         </config-file>
         <header-file src="src/ios/ScanditParser-Bridging-Header.h" type="BridgingHeader" />
         <source-file src="src/ios/ScanditParser.swift" />
-        <dependency id="scandit-cordova-datacapture-core" version="6.22.3" />
+        <dependency id="scandit-cordova-datacapture-core" version="6.24.2" />
         <podspec>
             <pods use-frameworks="true">
-                <pod name="scandit-datacapture-frameworks-parser" spec="= 6.22.3" />
+                <pod name="scandit-datacapture-frameworks-parser" spec="= 6.24.2" />
             </pods>
         </podspec>
     </platform>
@@ -31,12 +31,7 @@
             </feature>
         </config-file>
         <source-file src="src/android/ScanditParser.kt" target-dir="kotlin/com/scandit/datacapture/cordova/parser" />
-        <source-file src="src/android/actions/ActionInjectDefaults.kt" target-dir="kotlin/com/scandit/datacapture/cordova/parser/actions" />
-        <source-file src="src/android/actions/ActionParseRawData.kt" target-dir="kotlin/com/scandit/datacapture/cordova/parser/actions" />
-        <source-file src="src/android/actions/ActionParseString.kt" target-dir="kotlin/com/scandit/datacapture/cordova/parser/actions" />
-        <source-file src="src/android/actions/ActionParserInstanceHandler.kt" target-dir="kotlin/com/scandit/datacapture/cordova/parser/actions" />
-        <source-file src="src/android/factories/ParserActionFactory.kt" target-dir="kotlin/com/scandit/datacapture/cordova/parser/factories" />
-        <dependency id="scandit-cordova-datacapture-core" version="6.22.3" />
+        <dependency id="scandit-cordova-datacapture-core" version="6.24.2" />
         <framework custom="true" src="src/android/build.gradle" type="gradleReference" />
         <hook src="src/hooks/support-kotlin.js" type="after_plugin_install" />
     </platform>
