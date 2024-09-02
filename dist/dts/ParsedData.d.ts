@@ -12,8 +12,6 @@ export declare class ParsedData {
     get fieldsByName(): {
         [key: string]: ParsedField;
     };
-    private _fieldsWithIssues;
-    get fieldsWithIssues(): ParsedField[];
     private static fromJSON;
 }
 export {};

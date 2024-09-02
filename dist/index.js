@@ -22,25 +22,6 @@ var CordovaFunction;
     CordovaFunction["DisposeParser"] = "disposeParser";
 })(CordovaFunction || (CordovaFunction = {}));
 
-class ParserIssue {
-    get code() {
-        return this._code;
-    }
-    get message() {
-        return this._message;
-    }
-    get additionalInfo() {
-        return this._additionalInfo;
-    }
-    static fromJSON(json) {
-        const issue = new ParserIssue();
-        issue._code = json.code;
-        issue._message = json.message;
-        issue._additionalInfo = json.additionalInfo;
-        return issue;
-    }
-}
-
 class ParsedField {
     get name() {
         return this._name;
@@ -54,17 +35,12 @@ class ParsedField {
     get issues() {
         return this._issues;
     }
-    get warnings() {
-        return this._warnings;
-    }
     static fromJSON(json) {
-        var _a;
         const field = new ParsedField();
         field._name = json.name;
         field._parsed = json.parsed;
         field._rawString = json.rawString;
         field._issues = json.issues || [];
-        field._warnings = ((_a = json.warnings) === null || _a === void 0 ? void 0 : _a.map(e => ParserIssue.fromJSON(e))) || [];
         return field;
     }
 }
@@ -79,9 +55,6 @@ class ParsedData {
     get fieldsByName() {
         return this._fieldsByName;
     }
-    get fieldsWithIssues() {
-        return this._fieldsWithIssues;
-    }
     static fromJSON(json) {
         const data = new ParsedData();
         data._jsonString = JSON.stringify(json);
@@ -90,7 +63,6 @@ class ParsedData {
             fieldsByName[field.name] = field;
             return fieldsByName;
         }, {});
-        data._fieldsWithIssues = data._fields.filter(e => e.warnings.length > 0);
         return data;
     }
 }
@@ -119,16 +91,6 @@ function __decorate(decorators, target, key, desc) {
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 }
 
-function __awaiter(thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-}
-
 typeof SuppressedError === "function" ? SuppressedError : function (error, suppressed, message) {
     var e = new Error(message);
     return e.name = "SuppressedError", e.error = error, e.suppressed = suppressed, e;
@@ -141,16 +103,10 @@ class ParserProxy {
         return proxy;
     }
     parseString(data) {
-        return __awaiter(this, void 0, void 0, function* () {
-            yield this.parser.waitForInitialization();
-            return new Promise((resolve, reject) => {
-                ParserProxy.cordovaExec((parsedDataStr) => {
-                    const parsedDataJson = JSON.parse(parsedDataStr);
-                    const parsedData = ParsedData.fromJSON(parsedDataJson);
-                    resolve(parsedData);
-                }, reject, CordovaFunction.ParseString, [{ id: this.parser.id, data }]);
-            });
-        });
+        return new Promise((resolve, reject) => this.parser.waitForInitialization().then(() => ParserProxy.cordovaExec((parsedData) => resolve(ParsedData.fromJSON(JSON.parse(parsedData))), reject, CordovaFunction.ParseString, [{
+                id: this.parser.id,
+                data,
+            }])));
     }
     parseRawData(data) {
         return new Promise((resolve, reject) => this.parser.waitForInitialization().then(() => ParserProxy.cordovaExec((parsedData) => resolve(ParsedData.fromJSON(JSON.parse(parsedData))), reject, CordovaFunction.ParseRawData, [{
@@ -255,44 +211,10 @@ exports.ParserDataFormat = void 0;
      * Use ID Capture instead.
      */
     ParserDataFormat["UsUsid"] = "usUsid";
-    ParserDataFormat["IataBcbp"] = "iataBcbp";
-    ParserDataFormat["Gs1DigitalLink"] = "gs1DigitalLink";
 })(exports.ParserDataFormat || (exports.ParserDataFormat = {}));
-
-exports.ParserIssueAdditionalInfoKey = void 0;
-(function (ParserIssueAdditionalInfoKey) {
-    ParserIssueAdditionalInfoKey["StartingCharacters"] = "startingCharacters";
-    ParserIssueAdditionalInfoKey["Version"] = "version";
-    ParserIssueAdditionalInfoKey["MinimalVersion"] = "minimalVersion";
-    ParserIssueAdditionalInfoKey["ElementName"] = "elementName";
-    ParserIssueAdditionalInfoKey["String"] = "string";
-    ParserIssueAdditionalInfoKey["Length"] = "length";
-    ParserIssueAdditionalInfoKey["Charset"] = "charset";
-})(exports.ParserIssueAdditionalInfoKey || (exports.ParserIssueAdditionalInfoKey = {}));
-
-exports.ParserIssueCode = void 0;
-(function (ParserIssueCode) {
-    ParserIssueCode["None"] = "none";
-    ParserIssueCode["Unspecified"] = "unspecified";
-    ParserIssueCode["MandatoryEpdMissing"] = "mandatoryEpdMissing";
-    ParserIssueCode["InvalidDate"] = "invalidDate";
-    ParserIssueCode["StringTooShort"] = "stringTooShort";
-    ParserIssueCode["WrongStartingCharacters"] = "wrongStartingCharacters";
-    ParserIssueCode["InvalidSeparationBetweenElements"] = "invalidSeparationBetweenElements";
-    ParserIssueCode["UnsupportedVersion"] = "unsupportedVersion";
-    ParserIssueCode["IncompleteCode"] = "incompleteCode";
-    ParserIssueCode["EmptyElementContent"] = "emptyElementContent";
-    ParserIssueCode["InvalidElementLength"] = "invalidElementLength";
-    ParserIssueCode["TooLongElement"] = "tooLongElement";
-    ParserIssueCode["NonEmptyElementContent"] = "nonEmptyElementContent";
-    ParserIssueCode["InvalidCharsetInElement"] = "invalidCharsetInElement";
-    ParserIssueCode["TooManyAltPmtFields"] = "tooManyAltPmtFields";
-    ParserIssueCode["CannotContainSpaces"] = "cannotContainSpaces";
-})(exports.ParserIssueCode || (exports.ParserIssueCode = {}));
 
 initializeCordovaParser();
 
 exports.ParsedData = ParsedData;
 exports.ParsedField = ParsedField;
 exports.Parser = Parser;
-exports.ParserIssue = ParserIssue;
