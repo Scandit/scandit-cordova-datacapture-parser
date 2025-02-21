@@ -1,5 +1,5 @@
-var scanditCordovaDatacaptureCore = require('scandit-cordova-datacapture-core.Core');
-var scanditDatacaptureFrameworksCore = require('scandit-cordova-datacapture-core.Core');
+var scanditCordovaDatacaptureCore = cordova.require('scandit-cordova-datacapture-core.Core');
+var scanditDatacaptureFrameworksCore = cordova.require('scandit-cordova-datacapture-core.Core');
 
 // tslint:disable-next-line:variable-name
 const Cordova = {
@@ -51,9 +51,6 @@ class ParsedField {
     get rawString() {
         return this._rawString;
     }
-    get issues() {
-        return this._issues;
-    }
     get warnings() {
         return this._warnings;
     }
@@ -63,7 +60,6 @@ class ParsedField {
         field._name = json.name;
         field._parsed = json.parsed;
         field._rawString = json.rawString;
-        field._issues = json.issues || [];
         field._warnings = ((_a = json.warnings) === null || _a === void 0 ? void 0 : _a.map(e => ParserIssue.fromJSON(e))) || [];
         return field;
     }
@@ -144,8 +140,8 @@ class ParserProxy {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.parser.waitForInitialization();
             return new Promise((resolve, reject) => {
-                ParserProxy.cordovaExec((parsedDataStr) => {
-                    const parsedDataJson = JSON.parse(parsedDataStr);
+                ParserProxy.cordovaExec((result) => {
+                    const parsedDataJson = JSON.parse(result.data);
                     const parsedData = ParsedData.fromJSON(parsedDataJson);
                     resolve(parsedData);
                 }, reject, CordovaFunction.ParseString, [{ id: this.parser.id, data }]);
@@ -153,7 +149,7 @@ class ParserProxy {
         });
     }
     parseRawData(data) {
-        return new Promise((resolve, reject) => this.parser.waitForInitialization().then(() => ParserProxy.cordovaExec((parsedData) => resolve(ParsedData.fromJSON(JSON.parse(parsedData))), reject, CordovaFunction.ParseRawData, [{
+        return new Promise((resolve, reject) => this.parser.waitForInitialization().then(() => ParserProxy.cordovaExec((result) => resolve(ParsedData.fromJSON(JSON.parse(result.data))), reject, CordovaFunction.ParseRawData, [{
                 id: this.parser.id,
                 data,
             }])));
@@ -238,23 +234,8 @@ exports.ParserDataFormat = void 0;
 (function (ParserDataFormat) {
     ParserDataFormat["GS1AI"] = "gs1ai";
     ParserDataFormat["HIBC"] = "hibc";
-    /**
-     * @deprecated ParserDataFormat.DLID
-     * Use ID Capture instead.
-     */
-    ParserDataFormat["DLID"] = "dlid";
-    /**
-     * @deprecated ParserDataFormat.MRTD
-     * Use ID Capture instead.
-     */
-    ParserDataFormat["MRTD"] = "mrtd";
     ParserDataFormat["SwissQR"] = "swissQr";
     ParserDataFormat["VIN"] = "vin";
-    /**
-     * @deprecated ParserDataFormat.UsUsid
-     * Use ID Capture instead.
-     */
-    ParserDataFormat["UsUsid"] = "usUsid";
     ParserDataFormat["IataBcbp"] = "iataBcbp";
     ParserDataFormat["Gs1DigitalLink"] = "gs1DigitalLink";
 })(exports.ParserDataFormat || (exports.ParserDataFormat = {}));
