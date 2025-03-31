@@ -1,5 +1,5 @@
-var scanditCordovaDatacaptureCore = cordova.require('scandit-cordova-datacapture-core.Core');
-var scanditDatacaptureFrameworksCore = cordova.require('scandit-cordova-datacapture-core.Core');
+var scanditCordovaDatacaptureCore = cordova.require('scandit-cordova-datacapture-core.Scandit');
+var scanditDatacaptureFrameworksCore = cordova.require('scandit-cordova-datacapture-core.Scandit').__ScanditCore;
 
 // tslint:disable-next-line:variable-name
 const Cordova = {
@@ -236,8 +236,8 @@ exports.ParserDataFormat = void 0;
     ParserDataFormat["HIBC"] = "hibc";
     ParserDataFormat["SwissQR"] = "swissQr";
     ParserDataFormat["VIN"] = "vin";
-    ParserDataFormat["IataBcbp"] = "iataBcbp";
-    ParserDataFormat["Gs1DigitalLink"] = "gs1DigitalLink";
+    ParserDataFormat["IataBcbp"] = "iata_bcbp";
+    ParserDataFormat["Gs1DigitalLink"] = "gs1_digital_link";
 })(exports.ParserDataFormat || (exports.ParserDataFormat = {}));
 
 exports.ParserIssueAdditionalInfoKey = void 0;
