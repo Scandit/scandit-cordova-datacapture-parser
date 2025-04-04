@@ -1,6 +1,6 @@
 {
   "name": "scandit-cordova-datacapture-parser",
-  "version": "7.2.0",
+  "version": "6.28.5",
   "description": "Scandit Data Capture SDK for Cordova",
   "license": "Apache-2.0",
   "private": false,
@@ -21,8 +21,8 @@
     "clean-all": "npm run clean && node ../scandit-cordova-datacapture-core/scripts/clean-all.js"
   },
   "dependencies": {
-    "scandit-cordova-datacapture-core": "7.2.0",
-    "scandit-datacapture-frameworks-core": "7.2.0"
+    "scandit-cordova-datacapture-core": "6.28.5",
+    "scandit-datacapture-frameworks-core": "6.28.5"
   },
   "devDependencies": {},
   "cordova": {
