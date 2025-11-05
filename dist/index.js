@@ -173,9 +173,10 @@ class Parser extends scanditDatacaptureFrameworksCore.DefaultSerializeable {
         }
         return this._proxy;
     }
-    static create(dataFormat) {
+    static forContextAndFormat(context, dataFormat) {
         const parser = new Parser();
         parser.dataFormat = dataFormat;
+        parser._context = context;
         return parser.proxy.createUpdateNativeInstance()
             .then(() => {
             parser.isInitialized = true;
@@ -216,6 +217,9 @@ class Parser extends scanditDatacaptureFrameworksCore.DefaultSerializeable {
 __decorate([
     scanditDatacaptureFrameworksCore.nameForSerialization('id')
 ], Parser.prototype, "_id", void 0);
+__decorate([
+    scanditDatacaptureFrameworksCore.ignoreFromSerialization
+], Parser.prototype, "_context", void 0);
 __decorate([
     scanditDatacaptureFrameworksCore.ignoreFromSerialization
 ], Parser.prototype, "isInitialized", void 0);
