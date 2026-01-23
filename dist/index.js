@@ -183,6 +183,20 @@ class Parser extends scanditDatacaptureFrameworksCore.DefaultSerializeable {
             return parser;
         });
     }
+    /**
+     * @deprecated Use Parser.create(dataFormat) instead.
+     */
+    static forContextAndFormat(context, dataFormat) {
+        const parser = new Parser();
+        parser.dataFormat = dataFormat;
+        parser._context = context;
+        return parser.proxy.createUpdateNativeInstance()
+            .then(() => {
+            parser.isInitialized = true;
+            parser.waitingForInitialization.forEach(f => f());
+            return parser;
+        });
+    }
     constructor() {
         super();
         this.type = 'parser';
@@ -216,6 +230,9 @@ class Parser extends scanditDatacaptureFrameworksCore.DefaultSerializeable {
 __decorate([
     scanditDatacaptureFrameworksCore.nameForSerialization('id')
 ], Parser.prototype, "_id", void 0);
+__decorate([
+    scanditDatacaptureFrameworksCore.ignoreFromSerialization
+], Parser.prototype, "_context", void 0);
 __decorate([
     scanditDatacaptureFrameworksCore.ignoreFromSerialization
 ], Parser.prototype, "isInitialized", void 0);
