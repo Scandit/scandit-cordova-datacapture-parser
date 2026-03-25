@@ -5,9 +5,3 @@ export declare const Cordova: {
     ] | null) => void;
 };
 export declare function initializeCordovaParser(): void;
-export declare enum CordovaFunction {
-    ParseString = "parseString",
-    ParseRawData = "parseRawData",
-    CreateUpdateNativeInstance = "createUpdateNativeInstance",
-    DisposeParser = "disposeParser"
-}
