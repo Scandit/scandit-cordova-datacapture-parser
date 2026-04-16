@@ -1,6 +1,6 @@
 {
   "name": "scandit-cordova-datacapture-parser",
-  "version": "8.3.1",
+  "version": "7.6.11",
   "description": "Scandit Data Capture SDK for Cordova",
   "license": "Apache-2.0",
   "private": false,
@@ -12,18 +12,19 @@
     "cordova-android"
   ],
   "scripts": {
-    "build": "rollup -c ../../rollup.config.js --bundleConfigAsCjs",
+    "build": "rollup -c rollup.config.js --bundleConfigAsCjs",
+    "test": "npm run lint",
     "lint": "eslint ./www/ts",
     "coverage": "jest --coverage --maxWorkers=12",
     "clear-jest-cache": "jest --clearCache || true",
-    "clean": "pnpm run clear-jest-cache && node ../scandit-cordova-datacapture-core/scripts/clean.js",
-    "clean-all": "pnpm run clean && node ../scandit-cordova-datacapture-core/scripts/clean-all.js"
+    "clean": "npm run clear-jest-cache && node ../scandit-cordova-datacapture-core/scripts/clean.js",
+    "clean-all": "npm run clean && node ../scandit-cordova-datacapture-core/scripts/clean-all.js"
   },
   "dependencies": {
-    "scandit-cordova-datacapture-core": "file:../scandit-cordova-datacapture-core",
-    "scandit-datacapture-frameworks-core": "file:../../shared/jsmobile/scandit-datacapture-frameworks-core",
-    "scandit-datacapture-frameworks-parser": "file:../../shared/jsmobile/scandit-datacapture-frameworks-parser"
+    "scandit-cordova-datacapture-core": "7.6.11",
+    "scandit-datacapture-frameworks-core": "7.6.11"
   },
+  "devDependencies": {},
   "cordova": {
     "id": "scandit-cordova-datacapture-parser",
     "platforms": [
