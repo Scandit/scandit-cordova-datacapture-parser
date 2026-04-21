@@ -9,6 +9,7 @@ package com.scandit.datacapture.cordova.parser
 import com.scandit.datacapture.cordova.core.ScanditCaptureCore
 import com.scandit.datacapture.cordova.core.utils.CordovaResult
 import com.scandit.datacapture.cordova.core.utils.PluginMethod
+import com.scandit.datacapture.cordova.core.utils.defaultArgumentAsString
 import com.scandit.datacapture.frameworks.parser.ParserModule
 import org.apache.cordova.CallbackContext
 import org.apache.cordova.CordovaPlugin
@@ -65,44 +66,32 @@ class ScanditParser : CordovaPlugin() {
 
     @PluginMethod
     fun parseString(args: JSONArray, callbackContext: CallbackContext) {
-        val argsJson = args.getJSONObject(0)
-        val parserId = argsJson.getString("parserId")
-        val data = argsJson.getString("data")
         parserModule.parseString(
-            parserId,
-            data,
+            args.getJSONObject(0).toString(),
             CordovaResult(callbackContext)
         )
     }
 
     @PluginMethod
     fun parseRawData(args: JSONArray, callbackContext: CallbackContext) {
-        val argsJson = args.getJSONObject(0)
-        val parserId = argsJson.getString("parserId")
-        val data = argsJson.getString("data")
         parserModule.parseRawData(
-            parserId,
-            data,
+            args.getJSONObject(0).toString(),
             CordovaResult(callbackContext)
         )
     }
 
     @PluginMethod
     fun disposeParser(args: JSONArray, callbackContext: CallbackContext) {
-        val argsJson = args.getJSONObject(0)
-        val parserId = argsJson.getString("parserId")
         parserModule.disposeParser(
-            parserId,
+            args.defaultArgumentAsString,
             CordovaResult(callbackContext)
         )
     }
 
     @PluginMethod
     fun createUpdateNativeInstance(args: JSONArray, callbackContext: CallbackContext) {
-        val argsJson = args.getJSONObject(0)
-        val parserJson = argsJson.getString("parserJson")
         parserModule.createOrUpdateParser(
-            parserJson,
+            args.defaultArgumentAsString,
             CordovaResult(callbackContext)
         )
     }
