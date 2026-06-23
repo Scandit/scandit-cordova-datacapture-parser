@@ -1,4 +1,4 @@
-<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" id="scandit-cordova-datacapture-parser" version="8.1.5">
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" id="scandit-cordova-datacapture-parser" version="8.4.1">
     <name>ScanditParser</name>
     <js-module name="Scandit" src="dist/index.js">
         <runs />
@@ -8,7 +8,7 @@
         <engine name="cordova-ios" version=">=5.0.0" />
         <engine name="cordova-android" version=">=7.0.0" />
     </engines>
-    <platform name="ios">
+    <platform name="ios" package="swift">
         <config-file parent="/*" target="config.xml">
             <feature name="ScanditParser">
                 <param name="ios-package" value="ScanditParser" />
@@ -17,12 +17,13 @@
         </config-file>
         <header-file src="src/ios/ScanditParser-Bridging-Header.h" type="BridgingHeader" />
         <source-file src="src/ios/ScanditParser.swift" />
-        <dependency id="scandit-cordova-datacapture-core" version="8.1.5" />
+        <dependency id="scandit-cordova-datacapture-core" version="8.4.1" />
         <podspec>
             <pods use-frameworks="true">
-                <pod name="scandit-datacapture-frameworks-parser" spec="= 8.1.5" />
+                <pod name="scandit-datacapture-frameworks-parser" nospm="true" spec="= 8.4.1" />
             </pods>
         </podspec>
+        <hook src="src/hooks/patch-spm-deployment-target.js" type="after_plugin_install" />
     </platform>
     <platform name="android">
         <config-file parent="/*" target="config.xml">
@@ -31,7 +32,7 @@
             </feature>
         </config-file>
         <source-file src="src/android/ScanditParser.kt" target-dir="kotlin/com/scandit/datacapture/cordova/parser" />
-        <dependency id="scandit-cordova-datacapture-core" version="8.1.5" />
+        <dependency id="scandit-cordova-datacapture-core" version="8.4.1" />
         <framework custom="true" src="src/android/build.gradle" type="gradleReference" />
         <hook src="src/hooks/support-kotlin.js" type="after_plugin_install" />
     </platform>
