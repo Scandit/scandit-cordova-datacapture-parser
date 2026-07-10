@@ -1,4 +1,4 @@
-<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" id="scandit-cordova-datacapture-parser" version="8.5.0">
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" id="scandit-cordova-datacapture-parser" version="6.28.11">
     <name>ScanditParser</name>
     <js-module name="Scandit" src="dist/index.js">
         <runs />
@@ -8,7 +8,7 @@
         <engine name="cordova-ios" version=">=5.0.0" />
         <engine name="cordova-android" version=">=7.0.0" />
     </engines>
-    <platform name="ios" package="swift">
+    <platform name="ios">
         <config-file parent="/*" target="config.xml">
             <feature name="ScanditParser">
                 <param name="ios-package" value="ScanditParser" />
@@ -17,13 +17,12 @@
         </config-file>
         <header-file src="src/ios/ScanditParser-Bridging-Header.h" type="BridgingHeader" />
         <source-file src="src/ios/ScanditParser.swift" />
-        <dependency id="scandit-cordova-datacapture-core" version="8.5.0" />
+        <dependency id="scandit-cordova-datacapture-core" version="6.28.11" />
         <podspec>
             <pods use-frameworks="true">
-                <pod name="scandit-datacapture-frameworks-parser" nospm="true" spec="= 8.5.0" />
+                <pod name="scandit-datacapture-frameworks-parser" spec="= 6.28.11" />
             </pods>
         </podspec>
-        <hook src="src/hooks/patch-spm-deployment-target.js" type="after_plugin_install" />
     </platform>
     <platform name="android">
         <config-file parent="/*" target="config.xml">
@@ -32,7 +31,7 @@
             </feature>
         </config-file>
         <source-file src="src/android/ScanditParser.kt" target-dir="kotlin/com/scandit/datacapture/cordova/parser" />
-        <dependency id="scandit-cordova-datacapture-core" version="8.5.0" />
+        <dependency id="scandit-cordova-datacapture-core" version="6.28.11" />
         <framework custom="true" src="src/android/build.gradle" type="gradleReference" />
         <hook src="src/hooks/support-kotlin.js" type="after_plugin_install" />
     </platform>
