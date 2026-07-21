@@ -7,30 +7,28 @@
 package com.scandit.datacapture.cordova.parser
 
 import com.scandit.datacapture.cordova.core.ScanditCaptureCore
+import com.scandit.datacapture.cordova.core.utils.CordovaEventEmitter
+import com.scandit.datacapture.cordova.core.utils.CordovaMethodCall
 import com.scandit.datacapture.cordova.core.utils.CordovaResult
-import com.scandit.datacapture.cordova.core.utils.PluginMethod
-import com.scandit.datacapture.cordova.core.utils.defaultArgumentAsString
+import com.scandit.datacapture.frameworks.core.CoreModule
+import com.scandit.datacapture.frameworks.core.locator.DefaultServiceLocator
 import com.scandit.datacapture.frameworks.parser.ParserModule
 import org.apache.cordova.CallbackContext
 import org.apache.cordova.CordovaPlugin
 import org.json.JSONArray
-import java.lang.reflect.Method
 
 class ScanditParser : CordovaPlugin() {
 
+    private val emitter = CordovaEventEmitter()
+
     private val parserModule = ParserModule()
 
-    private lateinit var exposedFunctionsToJs: Map<String, Method>
+    private val serviceLocator = DefaultServiceLocator.getInstance()
 
     override fun pluginInitialize() {
         super.pluginInitialize()
         ScanditCaptureCore.addPlugin(serviceName)
         parserModule.onCreate(cordova.context)
-
-        // Init functions exposed to JS
-        exposedFunctionsToJs =
-            this.javaClass.methods.filter { it.getAnnotation(PluginMethod::class.java) != null }
-                .associateBy { it.name }
     }
 
     override fun onReset() {
@@ -48,51 +46,31 @@ class ScanditParser : CordovaPlugin() {
         args: JSONArray,
         callbackContext: CallbackContext
     ): Boolean {
-        return if (exposedFunctionsToJs.contains(action)) {
-            exposedFunctionsToJs[action]?.invoke(this, args, callbackContext)
+        return if (action == "executeParser") {
+            executeParser(args, callbackContext)
             true
         } else {
             false
         }
     }
 
-    @PluginMethod
-    fun getDefaults(
-        @Suppress("UNUSED_PARAMETER") args: JSONArray,
-        callbackContext: CallbackContext
-    ) {
-        callbackContext.success()
-    }
+    fun executeParser(args: JSONArray, callbackContext: CallbackContext) {
+        val argsJson = args.getJSONObject(0)
+        val coreModule = serviceLocator.resolve(
+            CoreModule::class.java.simpleName
+        ) as? CoreModule ?: return run {
+            callbackContext.error("Unable to retrieve the CoreModule from the locator.")
+        }
 
-    @PluginMethod
-    fun parseString(args: JSONArray, callbackContext: CallbackContext) {
-        parserModule.parseString(
-            args.getJSONObject(0).toString(),
-            CordovaResult(callbackContext)
+        val result = coreModule.execute(
+            CordovaMethodCall(args),
+            CordovaResult(callbackContext, emitter),
+            parserModule
         )
-    }
 
-    @PluginMethod
-    fun parseRawData(args: JSONArray, callbackContext: CallbackContext) {
-        parserModule.parseRawData(
-            args.getJSONObject(0).toString(),
-            CordovaResult(callbackContext)
-        )
-    }
-
-    @PluginMethod
-    fun disposeParser(args: JSONArray, callbackContext: CallbackContext) {
-        parserModule.disposeParser(
-            args.defaultArgumentAsString,
-            CordovaResult(callbackContext)
-        )
-    }
-
-    @PluginMethod
-    fun createUpdateNativeInstance(args: JSONArray, callbackContext: CallbackContext) {
-        parserModule.createOrUpdateParser(
-            args.defaultArgumentAsString,
-            CordovaResult(callbackContext)
-        )
+        if (!result) {
+            val methodName = argsJson.getString("methodName") ?: "unknown"
+            callbackContext.error("Unknown method: $methodName")
+        }
     }
 }
