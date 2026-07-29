@@ -1,7 +1,9 @@
 var scanditCordovaDatacaptureCore = cordova.require('scandit-cordova-datacapture-core.Scandit');
 var scanditDatacaptureFrameworksCore = cordova.require('scandit-cordova-datacapture-core.Scandit').__ScanditCore;
 
-const PARSER_PROXY_TYPE_NAMES = ['ParserProxy'];
+const PARSER_PROXY_TYPE_NAMES = [
+    'ParserProxy',
+];
 
 function registerParserProxies(provider) {
     scanditDatacaptureFrameworksCore.registerProxies(PARSER_PROXY_TYPE_NAMES, provider);
@@ -25,7 +27,7 @@ PERFORMANCE OF THIS SOFTWARE.
 
 
 function __decorate(decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc, d;
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
@@ -115,114 +117,33 @@ class ParsedData {
     }
 }
 
-/*
- * This file is part of the Scandit Data Capture SDK
- *
- * Copyright (C) 2025- Scandit AG. All rights reserved.
- */
-/**
- * Adapter class for Parser operations.
- * Provides typed methods that internally call $executeParser.
- * Generated from schema definition to ensure parameter and method name consistency.
- */
-class ParserProxyAdapter {
-    constructor(proxy) {
-        this.proxy = proxy;
-    }
-    /**
-     * Parses a string and returns structured data
-     * @param parserId Unique identifier of the parser instance
-     * @param data String data to parse
-     */
-    parseString(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ parserId, data }) {
-            const result = yield this.proxy.$executeParser({
-                moduleName: 'ParserModule',
-                methodName: 'parseString',
-                isEventRegistration: false,
-                parserId,
-                data,
-            });
-            return result.data;
-        });
-    }
-    /**
-     * Parses raw data and returns structured data
-     * @param parserId Unique identifier of the parser instance
-     * @param data Raw data to parse
-     */
-    parseRawData(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ parserId, data }) {
-            const result = yield this.proxy.$executeParser({
-                moduleName: 'ParserModule',
-                methodName: 'parseRawData',
-                isEventRegistration: false,
-                parserId,
-                data,
-            });
-            return result.data;
-        });
-    }
-    /**
-     * Creates or updates a native parser instance
-     * @param parserJson Parser configuration as JSON string
-     */
-    createUpdateNativeInstance(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ parserJson }) {
-            const result = yield this.proxy.$executeParser({
-                moduleName: 'ParserModule',
-                methodName: 'createUpdateNativeInstance',
-                isEventRegistration: false,
-                parserJson,
-            });
-            return result;
-        });
-    }
-    /**
-     * Disposes the parser instance and releases resources
-     * @param parserId Unique identifier of the parser instance to dispose
-     */
-    disposeParser(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ parserId }) {
-            const result = yield this.proxy.$executeParser({
-                moduleName: 'ParserModule',
-                methodName: 'disposeParser',
-                isEventRegistration: false,
-                parserId,
-            });
-            return result;
-        });
-    }
-}
-
 class ParserController extends scanditDatacaptureFrameworksCore.BaseController {
     constructor(parser) {
         super('ParserProxy');
-        this.adapter = new ParserProxyAdapter(this._proxy);
         this.parser = parser;
     }
     parseString(data) {
         return __awaiter(this, void 0, void 0, function* () {
-            const result = yield this.adapter.parseString({ parserId: this.parser.id, data: data });
-            const jsonData = JSON.parse(result);
+            const result = yield this._proxy.$parseString({ parserId: this.parser.id, data: data });
+            const jsonData = JSON.parse(result.data);
             return ParsedData['fromJSON'](jsonData);
         });
     }
     parseRawData(data) {
         return __awaiter(this, void 0, void 0, function* () {
-            const result = yield this.adapter.parseRawData({ parserId: this.parser.id, data: data });
-            const jsonData = JSON.parse(result);
+            const result = yield this._proxy.$parseRawData({ parserId: this.parser.id, data: data });
+            const jsonData = JSON.parse(result.data);
             return ParsedData['fromJSON'](jsonData);
         });
     }
     createUpdateNativeInstance() {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.adapter.createUpdateNativeInstance({ parserJson: JSON.stringify(this.parser.toJSON()) });
+            yield this._proxy.$createUpdateNativeInstance({ parserJson: JSON.stringify(this.parser.toJSON()) });
         });
     }
     disposeParser() {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.adapter.disposeParser({ parserId: this.parser.id });
+            yield this._proxy.$disposeParser({ parserId: this.parser.id });
         });
     }
 }
@@ -234,7 +155,7 @@ class Parser extends scanditDatacaptureFrameworksCore.DefaultSerializeable {
     static create(dataFormat) {
         const parser = new Parser();
         parser.dataFormat = dataFormat;
-        const promise = parser.controller.createUpdateNativeInstance().then(() => Promise.resolve(parser));
+        const promise = parser.controller.createUpdateNativeInstance().then(() => (Promise.resolve(parser)));
         return promise;
     }
     constructor() {
@@ -273,7 +194,6 @@ exports.ParserDataFormat = void 0;
     ParserDataFormat["VIN"] = "vin";
     ParserDataFormat["IataBcbp"] = "iata_bcbp";
     ParserDataFormat["Gs1DigitalLink"] = "gs1_digital_link";
-    ParserDataFormat["Epc"] = "epc";
 })(exports.ParserDataFormat || (exports.ParserDataFormat = {}));
 
 exports.ParserIssueCode = void 0;
@@ -307,12 +227,6 @@ exports.ParserIssueAdditionalInfoKey = void 0;
     ParserIssueAdditionalInfoKey["Charset"] = "charset";
 })(exports.ParserIssueAdditionalInfoKey || (exports.ParserIssueAdditionalInfoKey = {}));
 
-// tslint:disable-next-line:variable-name
-const Cordova = {
-    pluginName: 'ScanditParser',
-    exec: (success, error, functionName, args) => scanditCordovaDatacaptureCore.cordovaExec(success, error, Cordova.pluginName, functionName, args),
-};
-
 class CordovaParserNativeCallerProvider {
     getNativeCaller(_proxyType) {
         return scanditCordovaDatacaptureCore.createCordovaNativeCaller(Cordova.exec, Cordova.pluginName);
@@ -323,6 +237,11 @@ function initParserProxies() {
     registerParserProxies(new CordovaParserNativeCallerProvider());
 }
 
+// tslint:disable-next-line:variable-name
+const Cordova = {
+    pluginName: 'ScanditParser',
+    exec: (success, error, functionName, args) => scanditCordovaDatacaptureCore.cordovaExec(success, error, Cordova.pluginName, functionName, args),
+};
 function getDefaults() {
     initParserProxies();
     return Promise.resolve();
