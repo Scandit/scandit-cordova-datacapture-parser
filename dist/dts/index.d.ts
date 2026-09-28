@@ -1,7 +1,7 @@
-export { ParsedData } from './ParsedData';
-export { ParsedField } from './ParsedField';
-export { Parser } from './Parser';
-export { ParserDataFormat } from './ParserDataFormat';
-export { ParserIssue } from './ParserIssue';
-export { ParserIssueAdditionalInfoKey } from './ParserIssueAdditionalInfoKey';
-export { ParserIssueCode } from './ParserIssueCode';
+export { ParsedData } from 'scandit-datacapture-frameworks-parser';
+export { ParsedField } from 'scandit-datacapture-frameworks-parser';
+export { Parser } from 'scandit-datacapture-frameworks-parser';
+export { ParserDataFormat } from 'scandit-datacapture-frameworks-parser';
+export { ParserIssue } from 'scandit-datacapture-frameworks-parser';
+export { ParserIssueAdditionalInfoKey } from 'scandit-datacapture-frameworks-parser';
+export { ParserIssueCode } from 'scandit-datacapture-frameworks-parser';
