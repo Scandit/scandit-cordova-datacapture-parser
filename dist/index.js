@@ -1,9 +1,7 @@
 var scanditCordovaDatacaptureCore = cordova.require('scandit-cordova-datacapture-core.Scandit');
 var scanditDatacaptureFrameworksCore = cordova.require('scandit-cordova-datacapture-core.Scandit').__ScanditCore;
 
-const PARSER_PROXY_TYPE_NAMES = [
-    'ParserProxy',
-];
+const PARSER_PROXY_TYPE_NAMES = ['ParserProxy'];
 
 function registerParserProxies(provider) {
     scanditDatacaptureFrameworksCore.registerProxies(PARSER_PROXY_TYPE_NAMES, provider);
@@ -236,7 +234,7 @@ class Parser extends scanditDatacaptureFrameworksCore.DefaultSerializeable {
     static create(dataFormat) {
         const parser = new Parser();
         parser.dataFormat = dataFormat;
-        const promise = parser.controller.createUpdateNativeInstance().then(() => (Promise.resolve(parser)));
+        const promise = parser.controller.createUpdateNativeInstance().then(() => Promise.resolve(parser));
         return promise;
     }
     constructor() {
@@ -309,6 +307,12 @@ exports.ParserIssueAdditionalInfoKey = void 0;
     ParserIssueAdditionalInfoKey["Charset"] = "charset";
 })(exports.ParserIssueAdditionalInfoKey || (exports.ParserIssueAdditionalInfoKey = {}));
 
+// tslint:disable-next-line:variable-name
+const Cordova = {
+    pluginName: 'ScanditParser',
+    exec: (success, error, functionName, args) => scanditCordovaDatacaptureCore.cordovaExec(success, error, Cordova.pluginName, functionName, args),
+};
+
 class CordovaParserNativeCallerProvider {
     getNativeCaller(_proxyType) {
         return scanditCordovaDatacaptureCore.createCordovaNativeCaller(Cordova.exec, Cordova.pluginName);
@@ -319,11 +323,6 @@ function initParserProxies() {
     registerParserProxies(new CordovaParserNativeCallerProvider());
 }
 
-// tslint:disable-next-line:variable-name
-const Cordova = {
-    pluginName: 'ScanditParser',
-    exec: (success, error, functionName, args) => scanditCordovaDatacaptureCore.cordovaExec(success, error, Cordova.pluginName, functionName, args),
-};
 function getDefaults() {
     initParserProxies();
     return Promise.resolve();
